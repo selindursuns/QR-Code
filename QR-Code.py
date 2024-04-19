@@ -12,8 +12,8 @@ urls = [
 ]
 
 
-# qr_color = '#39FF14'
-qr_color = '#000000'
+qr_color = '#39FF14'
+# qr_color = '#000000'
 
 
 def generate_qr_code(url, color):
@@ -25,8 +25,8 @@ def generate_qr_code(url, color):
     )
     qr.add_data(url)
     qr.make(fit=True)
-    # img = qr.make_image(fill_color=color, back_color="transparent")
-    img = qr.make_image(fill_color=color, back_color="white")
+    img = qr.make_image(fill_color=color, back_color="transparent")
+    # img = qr.make_image(fill_color=color, back_color="white")
     img_byte_arr = io.BytesIO()
     img.save(img_byte_arr, format='PNG')
     return img_byte_arr.getvalue()
