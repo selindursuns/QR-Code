@@ -1,6 +1,7 @@
 import qrcode
 from PIL import Image
 import io
+import qrcode.image.svg
 
 urls = [
 "https://os1-1.vercel.app/",
@@ -8,12 +9,13 @@ urls = [
 "https://os1-1.vercel.app/prototype/prototype-2",
 "https://os1-1.vercel.app/prototype/prototype-3",
 "https://os1-1.vercel.app/prototype/prototype-4",
-"https://os1-1.vercel.app/prototype/prototype-5"
+"https://os1-1.vercel.app/prototype/prototype-5",
+"https://os1-1.vercel.app/prototype/prototype-6",
 ]
 
 
-qr_color = '#39FF14'
-# qr_color = '#000000'
+# qr_color = '#39FF14'
+qr_color = '#000000'
 
 
 def generate_qr_code(url, color):
@@ -25,16 +27,23 @@ def generate_qr_code(url, color):
     )
     qr.add_data(url)
     qr.make(fit=True)
-    img = qr.make_image(fill_color=color, back_color="transparent")
+    # img = qr.make_image(fill_color=color, back_color="transparent")
     # img = qr.make_image(fill_color=color, back_color="white")
+    img = qr.make_image(image_factory=qrcode.image.svg.SvgPathImage, fill_color=color, back_color="white")
     img_byte_arr = io.BytesIO()
-    img.save(img_byte_arr, format='PNG')
+    # img.save(img_byte_arr, format='PNG')
+    img.save(img_byte_arr)
     return img_byte_arr.getvalue()
 
 # Generate QR codes for each URL
-qr_images = [generate_qr_code(url, qr_color) for url in urls]
+# qr_images = [generate_qr_code(url, qr_color) for url in urls]
 
 # Save or display the QR codes
-for idx, img_data in enumerate(qr_images):
-    with open(f"qr_code_{idx+1}.png", "wb") as img_file:
-        img_file.write(img_data)
+# for idx, img_data in enumerate(qr_images):
+#     with open(f"qr_code_{idx+1}.png", "wb") as img_file:
+#         img_file.write(img_data)
+
+for idx, url in enumerate(urls):
+    qr_svg = generate_qr_code(url, qr_color)
+    with open(f"qr_code_{idx+1}.svg", "wb") as svg_file:
+        svg_file.write(qr_svg)
